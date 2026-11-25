@@ -206,6 +206,7 @@ check:'<path d="M5 12.5l4.5 4.5L19 7"/>',
 x:'<path d="M6 6l12 12M18 6L6 18"/>',
 target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
 camera:'<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/>',
+image:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
 user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
 cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'
 };
@@ -639,6 +640,7 @@ function profile(first){
     <b>Ou utilise ta photo</b>
     <div id="phbox"></div>
     <input type="file" id="phin" accept="image/*" hidden>
+    <input type="file" id="phcam" accept="image/*" capture="user" hidden>
     <p class="perr" id="pherr" hidden>Cette image n'a pas pu être chargée. Essaie une autre photo.</p>
     <div class="prow"><b>Couleur de peau</b><div class="skins">${SKINS.map((c,i)=>`<button type="button" class="skin ${i===pickSkin?"on":""}" data-i="${i}" style="background:${c}" aria-label="Teinte ${i+1}" aria-pressed="${i===pickSkin}"></button>`).join("")}</div></div>
     <div class="prow"><label for="pnum"><b>Numéro de maillot</b></label><input id="pnum" inputmode="numeric" maxlength="2" value="${esc(pickNum)}" class="num"></div>
@@ -652,14 +654,17 @@ function profile(first){
   const drawPhoto=()=>{const on=pickAv==="photo";
     document.getElementById("phbox").innerHTML=`<div class="phrow">
       <button type="button" class="phprev ${on?"on":""}" id="phprev" aria-label="Utiliser ma photo" aria-pressed="${on}" ${pickPhoto?"":"disabled"}>${pickPhoto?`<img src="${pickPhoto}" alt="">`:ic("user")}</button>
-      <div class="phbtns"><button type="button" class="b3 blue" id="phbtn">${ic("camera")} ${pickPhoto?"Changer de photo":"Prendre ou choisir une photo"}</button>
+      <div class="phbtns"><button type="button" class="b3 blue" id="phcambtn">${ic("camera")} Prendre un selfie</button>
+      <button type="button" class="b3 ghost" id="phbtn">${ic("image")} Choisir dans la galerie</button>
       ${pickPhoto?'<button type="button" class="link" id="phdel">Retirer la photo</button>':""}</div></div>
       <p class="foot" style="text-align:left">Ta photo est recadrée, réduite et reste uniquement sur cet appareil.</p>`;
     document.getElementById("phbtn").onclick=()=>document.getElementById("phin").click();
+    document.getElementById("phcambtn").onclick=()=>document.getElementById("phcam").click();
     if(pickPhoto){document.getElementById("phprev").onclick=()=>{pickAv="photo";drawGrid()};
       document.getElementById("phdel").onclick=()=>{pickPhoto=null;if(pickAv==="photo")pickAv="buteur";drawGrid()}}};
-  document.getElementById("phin").onchange=async e=>{const f=e.target.files[0];e.target.value="";const pe=document.getElementById("pherr");pe.hidden=true;
+  const onPick=async e=>{const f=e.target.files[0];e.target.value="";const pe=document.getElementById("pherr");pe.hidden=true;
     try{pickPhoto=await shrinkPhoto(f);pickAv="photo";drawGrid()}catch(_){pe.hidden=false}};
+  document.getElementById("phin").onchange=onPick;document.getElementById("phcam").onchange=onPick;
   drawGrid();
   if(!first)document.getElementById("back").onclick=home;
   const inp=document.getElementById("pname"),err=document.getElementById("perr"),num=document.getElementById("pnum"),nerr=document.getElementById("nerr");
