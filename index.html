@@ -234,7 +234,7 @@ svg.masc{display:block;flex:none}
 .urlbox{font-weight:600;word-break:break-all;background:var(--bg);border:2px dashed var(--line);border-radius:14px;padding:10px 12px;user-select:all}
 .row2{display:flex;gap:10px;flex-wrap:wrap}
 .row2 .b3{flex:1;min-width:140px}
-.credit{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted);background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 14px;font-style:italic}
+.credit{max-width:360px;font-size:15px;line-height:1.45;color:var(--muted);background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 16px;font-style:italic;text-wrap:balance}
 
 /* colour-blind mode (Okabe-Ito blue/vermillion for right/wrong) */
 :root[data-cb="1"]{--jade:#0072B2;--jade-d:#00508A;--red:#D55E00;--red-d:#9C4400;--ok-bg:#DCEBF7;--ko-bg:#FBE3D3}
@@ -1017,6 +1017,7 @@ function splash(){
     <p class="muted">${t("splashSub")(QUESTIONS.length)}</p>
     <button class="b3 enter" id="enter">${t("enter")}</button>
     <div class="duo">${tiger(64,"happy")}${dragon(64,"happy")}</div>
+    <p class="credit">${t("credit")}</p>
   </div>`;
   app.querySelectorAll(".lang").forEach(b=>b.onclick=()=>{st.lang=b.dataset.l;applyTheme();save();splash()});
   document.getElementById("enter").onclick=home;
@@ -1173,8 +1174,7 @@ function home(){
   <p class="hint">${hintBadge?(st.badges.includes(hintBadge)?t("unlocked"):t("toUnlock"))+bdesc(hintBadge):t("badgeHint")}</p>
   <button class="b3 ghost big2" id="sharebtn">${ic("qr")}<span><b>${t("share")}</b><small>${t("shareSub")}</small></span></button>
   <div id="resetzone" style="display:flex;justify-content:center"><button class="reset" id="reset">${t("reset")}</button></div>
-  <p class="foot">${t("foot")(QUESTIONS.length,FICHES.length)}</p>
-  <p class="credit">${dragon(34,"happy")}<span>${t("credit")}</span></p>`;
+  <p class="foot">${t("foot")(QUESTIONS.length,FICHES.length)}</p>`;
   bindTop();
   document.getElementById("rankbtn").onclick=leaderboard;
   document.getElementById("sharebtn").onclick=share;
