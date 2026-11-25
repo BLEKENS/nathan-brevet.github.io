@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Révise le brevet avec 177 questions d'annales 2024, 2025 et 2026, des fiches, un parcours de niveaux et des avatars à personnaliser.">
+<meta name="description" content="Révise le brevet avec 177 questions d'annales 2024, 2025 et 2026, un classement entre potes, des battles et un parcours de niveaux.">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 <title>Brevet.AI</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -185,6 +185,48 @@ svg.masc{display:block;flex:none}
 .btns{display:flex;flex-direction:column;gap:12px}
 .err{display:flex;flex-direction:column;gap:6px}
 .err .you{color:var(--red)}.err .right{color:var(--jade);font-weight:600}.err .ex{color:var(--muted);font-size:15px}
+
+/* leaderboard + battle */
+.duo2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.duo2 .b3,.big2{display:flex;align-items:center;gap:10px;text-align:left;padding:12px 14px}
+.duo2 .b3 svg.i,.big2 svg.i{width:28px;height:28px}
+.duo2 small,.big2 small{display:block;font-weight:500;font-size:13px;opacity:.9}
+.podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:8px;margin-top:8px}
+.pod{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-width:0}
+.pod b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pod span{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pod .step{width:100%;border-radius:14px 14px 0 0;background:var(--pc);color:#fff;font-weight:700;font-size:24px;display:grid;place-items:center;margin-top:4px}
+.p1{--pc:var(--gold)}.p1 .step{height:92px;color:var(--on-gold)}
+.p2{--pc:#8C96AD}.p2 .step{height:66px}
+.p3{--pc:#B8732E}.p3 .step{height:50px}
+.pod.me b{color:var(--blue)}
+.rlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.rlist li{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:8px 12px;min-width:0}
+.rlist li.me{border-color:var(--blue);box-shadow:0 4px 0 var(--blue)}
+.rlist b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rlist .pos{width:24px;font-weight:700;color:var(--muted);text-align:center;font-variant-numeric:tabular-nums}
+.rlist .pv{margin-left:auto;font-weight:700;color:var(--gold-d);font-variant-numeric:tabular-nums}
+.extag{font-size:11px;font-weight:600;color:var(--muted);border:1.5px solid var(--line);border-radius:6px;padding:0 6px}
+.vsbanner{display:flex;align-items:center;justify-content:center;gap:18px}
+.vsmid{font-size:28px;font-weight:700;color:var(--red);letter-spacing:.05em}
+.vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px}
+.side{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px 6px;text-align:center;min-width:0}
+.side.me{border-color:var(--blue);box-shadow:0 4px 0 var(--blue)}
+.side b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side .sc{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+.side .muted{font-size:13px}
+.qmark{width:84px;height:84px;border-radius:50%;background:var(--lock);display:grid;place-items:center;font-size:40px;font-weight:700;color:var(--muted)}
+.joinrow{display:flex;gap:8px}
+.joinrow input,.pform input.grp{font:inherit;font-size:18px;letter-spacing:.12em;text-transform:uppercase;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--text);min-width:0}
+.joinrow input{flex:1}
+.joinrow .b3,.codebox .b3{width:auto}
+.codebox{display:flex;gap:10px;align-items:center}
+.codebox span{flex:1;font-size:30px;font-weight:700;letter-spacing:.2em;text-align:center;background:var(--bg);border:2px dashed var(--line);border-radius:14px;padding:6px;user-select:all}
+.blist{display:flex;flex-direction:column;gap:8px}
+.bitem{display:flex;gap:12px;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 12px;text-align:left}
+.bitem .code{font-weight:700;letter-spacing:.12em}
+.bitem .muted{margin-left:auto}
+.chip svg.i{width:18px;height:18px}
 
 /* colour-blind mode (Okabe-Ito blue/vermillion for right/wrong) */
 :root[data-cb="1"]{--jade:#0072B2;--jade-d:#00508A;--red:#D55E00;--red-d:#9C4400;--ok-bg:#DCEBF7;--ko-bg:#FBE3D3}
@@ -695,7 +737,8 @@ QUESTIONS.forEach(q=>{
 const ruP=(n,f)=>{const a=n%10,b=n%100;return f[a===1&&b!==11?0:a>=2&&a<=4&&(b<10||b>=20)?1:2]};
 const sFr=(n,w)=>n+" "+w+(n>1?"s":"");
 const STR={
-fr:{lang:"Français",splashTag:"Révise le brevet en jouant",splashSub:n=>`${n} questions tirées des vraies annales 2024 à 2026`,enter:"ENTRER",contentNote:"",
+fr:{rank:"Classement",rankSub:"Toi contre ta ligue",battle:"Battle",battleSub:"Défie tes potes",groupCode:"Code de ligue (facultatif)",groupHelp:"Mets le même code que tes potes pour apparaître dans le même classement, par exemple 3B-COLLEGE.",groupErr:"Le code doit faire 3 à 20 caractères : lettres, chiffres ou tirets.",week:"Cette semaine",allTime:"Depuis le début",you:"Toi",noGroup:"Ajoute un code de ligue dans ton profil pour rejoindre le classement de tes potes.",setGroup:"Ajouter un code de ligue",demoNote:"Aperçu : le classement en ligne n'est pas encore branché, ces joueurs sont des exemples. Ta ligne à toi est réelle.",example:"Exemple",offline:"Impossible de joindre le classement en ligne. Vérifie ta connexion et réessaie.",loading:"Chargement…",retry:"Réessayer",alone:"Tu es seul dans cette ligue pour l'instant. Partage ton code à tes potes !",vsBot:"Battle contre Hu",vsBotSub:"Le tigre joue les mêmes questions que toi",vsFriend:"Battle entre potes",create:"Créer une battle",join:"Jouer",joinPh:"Code de la battle",codeErr:"Entre le code à 6 caractères reçu de ton pote.",noBattle:"Aucune battle ne correspond à ce code.",needOnline:"Les battles entre potes s'activeront dès que Firebase sera branché. En attendant, affronte Hu !",subject:"Matière",shareCode:"Envoie ce code à ton pote :",copy:"Copier",copied:"Copié !",waiting:"En attente de ton adversaire. Reviens ici quand il aura joué.",refresh:"Actualiser",win:"Victoire !",lose:"Défaite…",draw:"Égalité !",tieTime:"À égalité de score, le plus rapide gagne.",myBattles:"Mes battles",pending:"En attente",done2:"Terminée",again2:"Nouvelle battle",time:"Temps",
+lang:"Français",splashTag:"Révise le brevet en jouant",splashSub:n=>`${n} questions tirées des vraies annales 2024 à 2026`,enter:"ENTRER",contentNote:"",
 coach:"romAIn, ton coach",hello:n=>`Salut ${n} !`,
 coachStart:"Je suis romAIn, ton coach. Commence par le premier niveau de maths : lis la fiche, puis joue !",
 coachNone:"Aucun point faible net pour l'instant. Avance sur ton parcours ou tente un brevet complet.",
@@ -726,7 +769,8 @@ advNone:"Aucune erreur, impressionnant ! Continue sur ton parcours.",advErr:(n,t
 nextChap:"Chapitre suivant",reviewBtn:n=>`Revoir mes ${sFr(n,"erreur")}`,replay:"Rejouer",backPath:"Retour au parcours",
 remember:"À retenir",rememberP:"Relis bien chaque explication : ce sont des questions tombées au brevet.",timeUp:"Temps écoulé, pas de réponse",yourAns:"Ta réponse : ",redo:"Refaire un quiz"},
 
-en:{lang:"English",splashTag:"Prep for the brevet by playing",splashSub:n=>`${n} questions from real 2024–2026 exam papers`,enter:"ENTER",contentNote:"Questions and study sheets stay in French, the language of the brevet exam.",
+en:{rank:"Leaderboard",rankSub:"You vs your league",battle:"Battle",battleSub:"Challenge your friends",groupCode:"League code (optional)",groupHelp:"Use the same code as your friends to share a leaderboard, for example 3B-SCHOOL.",groupErr:"The code must be 3 to 20 characters: letters, numbers or hyphens.",week:"This week",allTime:"All time",you:"You",noGroup:"Add a league code in your profile to join your friends' leaderboard.",setGroup:"Add a league code",demoNote:"Preview: the online leaderboard isn't connected yet, so these players are examples. Your own row is real.",example:"Example",offline:"Couldn't reach the online leaderboard. Check your connection and try again.",loading:"Loading…",retry:"Try again",alone:"You're alone in this league for now. Share your code with your friends!",vsBot:"Battle vs Hu",vsBotSub:"The tiger answers the same questions as you",vsFriend:"Battle with friends",create:"Create a battle",join:"Play",joinPh:"Battle code",codeErr:"Enter the 6-character code your friend sent you.",noBattle:"No battle matches this code.",needOnline:"Battles with friends switch on once Firebase is connected. Meanwhile, take on Hu!",subject:"Subject",shareCode:"Send this code to your friend:",copy:"Copy",copied:"Copied!",waiting:"Waiting for your opponent. Come back here once they've played.",refresh:"Refresh",win:"Victory!",lose:"Defeat…",draw:"Draw!",tieTime:"When scores are tied, the fastest wins.",myBattles:"My battles",pending:"Waiting",done2:"Finished",again2:"New battle",time:"Time",
+lang:"English",splashTag:"Prep for the brevet by playing",splashSub:n=>`${n} questions from real 2024–2026 exam papers`,enter:"ENTER",contentNote:"Questions and study sheets stay in French, the language of the brevet exam.",
 coach:"romAIn, your coach",hello:n=>`Hi ${n}!`,
 coachStart:"I'm romAIn, your coach. Start with the first maths level: read the study sheet, then play!",
 coachNone:"No clear weak spot yet. Keep moving along your path or try a full brevet paper.",
@@ -757,7 +801,8 @@ advNone:"No mistakes, impressive! Keep going along your path.",advErr:(n,t)=>`${
 nextChap:"Next chapter",reviewBtn:n=>`Review my ${n} mistake${n>1?"s":""}`,replay:"Play again",backPath:"Back to my path",
 remember:"Remember",rememberP:"Read each explanation carefully: all these questions came up in the brevet.",timeUp:"Time's up, no answer",yourAns:"Your answer: ",redo:"Take another quiz"},
 
-de:{lang:"Deutsch",splashTag:"Lerne spielend für den Brevet",splashSub:n=>`${n} Fragen aus echten Prüfungen 2024–2026`,enter:"STARTEN",contentNote:"Fragen und Lernblätter bleiben auf Französisch, der Sprache der Brevet-Prüfung.",
+de:{rank:"Rangliste",rankSub:"Du gegen deine Liga",battle:"Battle",battleSub:"Fordere deine Freunde heraus",groupCode:"Liga-Code (optional)",groupHelp:"Nimm denselben Code wie deine Freunde, um in derselben Rangliste zu sein, zum Beispiel 3B-SCHULE.",groupErr:"Der Code braucht 3 bis 20 Zeichen: Buchstaben, Zahlen oder Bindestriche.",week:"Diese Woche",allTime:"Gesamt",you:"Du",noGroup:"Füge in deinem Profil einen Liga-Code hinzu, um der Rangliste deiner Freunde beizutreten.",setGroup:"Liga-Code hinzufügen",demoNote:"Vorschau: Die Online-Rangliste ist noch nicht verbunden, diese Spieler sind Beispiele. Deine eigene Zeile ist echt.",example:"Beispiel",offline:"Die Online-Rangliste ist nicht erreichbar. Prüfe deine Verbindung und versuch es nochmal.",loading:"Wird geladen…",retry:"Nochmal versuchen",alone:"Du bist gerade allein in dieser Liga. Teile deinen Code mit deinen Freunden!",vsBot:"Battle gegen Hu",vsBotSub:"Der Tiger beantwortet dieselben Fragen wie du",vsFriend:"Battle mit Freunden",create:"Battle erstellen",join:"Spielen",joinPh:"Battle-Code",codeErr:"Gib den 6-stelligen Code ein, den dein Freund dir geschickt hat.",noBattle:"Zu diesem Code gibt es kein Battle.",needOnline:"Battles mit Freunden funktionieren, sobald Firebase verbunden ist. Bis dahin: Tritt gegen Hu an!",subject:"Fach",shareCode:"Schick diesen Code an deinen Freund:",copy:"Kopieren",copied:"Kopiert!",waiting:"Warte auf deinen Gegner. Komm hierher zurück, sobald er gespielt hat.",refresh:"Aktualisieren",win:"Sieg!",lose:"Niederlage…",draw:"Unentschieden!",tieTime:"Bei Punktgleichstand gewinnt der Schnellere.",myBattles:"Meine Battles",pending:"Wartet",done2:"Beendet",again2:"Neues Battle",time:"Zeit",
+lang:"Deutsch",splashTag:"Lerne spielend für den Brevet",splashSub:n=>`${n} Fragen aus echten Prüfungen 2024–2026`,enter:"STARTEN",contentNote:"Fragen und Lernblätter bleiben auf Französisch, der Sprache der Brevet-Prüfung.",
 coach:"romAIn, dein Coach",hello:n=>`Hallo ${n}!`,
 coachStart:"Ich bin romAIn, dein Coach. Fang mit dem ersten Mathe-Level an: Lies das Lernblatt und spiel los!",
 coachNone:"Noch keine klare Schwäche. Geh deinen Weg weiter oder versuch eine ganze Brevet-Prüfung.",
@@ -788,7 +833,8 @@ advNone:"Kein Fehler, beeindruckend! Geh deinen Weg weiter.",advErr:(n,t)=>`${n}
 nextChap:"Nächstes Kapitel",reviewBtn:n=>`Meine ${n} Fehler ansehen`,replay:"Nochmal spielen",backPath:"Zurück zu meinem Weg",
 remember:"Zum Merken",rememberP:"Lies jede Erklärung genau: Diese Fragen kamen alle im Brevet dran.",timeUp:"Zeit abgelaufen, keine Antwort",yourAns:"Deine Antwort: ",redo:"Neues Quiz"},
 
-ru:{lang:"Русский",splashTag:"Готовься к экзамену brevet, играя",splashSub:n=>`${n} ${ruP(n,["вопрос","вопроса","вопросов"])} из настоящих экзаменов 2024–2026`,enter:"ВОЙТИ",contentNote:"Вопросы и конспекты остаются на французском — языке экзамена brevet.",
+ru:{rank:"Рейтинг",rankSub:"Ты против своей лиги",battle:"Батл",battleSub:"Брось вызов друзьям",groupCode:"Код лиги (необязательно)",groupHelp:"Введи тот же код, что и друзья, чтобы попасть в один рейтинг, например 3B-SCHOOL.",groupErr:"Код должен содержать от 3 до 20 символов: буквы, цифры или дефисы.",week:"Эта неделя",allTime:"За всё время",you:"Ты",noGroup:"Добавь код лиги в профиле, чтобы попасть в рейтинг друзей.",setGroup:"Добавить код лиги",demoNote:"Предпросмотр: онлайн-рейтинг ещё не подключён, эти игроки — примеры. Твоя строка настоящая.",example:"Пример",offline:"Не удалось подключиться к онлайн-рейтингу. Проверь соединение и попробуй ещё раз.",loading:"Загрузка…",retry:"Повторить",alone:"Пока ты один в этой лиге. Поделись кодом с друзьями!",vsBot:"Батл против Ху",vsBotSub:"Тигр отвечает на те же вопросы, что и ты",vsFriend:"Батл с друзьями",create:"Создать батл",join:"Играть",joinPh:"Код батла",codeErr:"Введи 6-значный код, который прислал друг.",noBattle:"Батла с таким кодом нет.",needOnline:"Батлы с друзьями заработают после подключения Firebase. А пока сразись с Ху!",subject:"Предмет",shareCode:"Отправь этот код другу:",copy:"Копировать",copied:"Скопировано!",waiting:"Ждём соперника. Вернись сюда, когда он сыграет.",refresh:"Обновить",win:"Победа!",lose:"Поражение…",draw:"Ничья!",tieTime:"При равном счёте побеждает тот, кто быстрее.",myBattles:"Мои батлы",pending:"Ожидание",done2:"Завершён",again2:"Новый батл",time:"Время",
+lang:"Русский",splashTag:"Готовься к экзамену brevet, играя",splashSub:n=>`${n} ${ruP(n,["вопрос","вопроса","вопросов"])} из настоящих экзаменов 2024–2026`,enter:"ВОЙТИ",contentNote:"Вопросы и конспекты остаются на французском — языке экзамена brevet.",
 coach:"romAIn, твой тренер",hello:n=>`Привет, ${n}!`,
 coachStart:"Я romAIn, твой тренер. Начни с первого уровня по математике: прочитай конспект и играй!",
 coachNone:"Явных слабых мест пока нет. Продвигайся по маршруту или попробуй целый экзамен.",
@@ -819,7 +865,8 @@ advNone:"Ни одной ошибки, впечатляет! Продолжай 
 nextChap:"Следующая глава",reviewBtn:n=>`Разобрать ошибки (${n})`,replay:"Сыграть ещё",backPath:"Вернуться к маршруту",
 remember:"Запомни",rememberP:"Внимательно прочитай каждое объяснение: все эти вопросы были на экзамене brevet.",timeUp:"Время вышло, ответа нет",yourAns:"Твой ответ: ",redo:"Пройти ещё тест"},
 
-zh:{lang:"中文",splashTag:"边玩边备考 Brevet",splashSub:n=>`${n} 道题，全部来自 2024–2026 年真题`,enter:"进入",contentNote:"题目和复习卡片保持法语，因为 Brevet 考试使用法语。",
+zh:{rank:"排行榜",rankSub:"你和你的联赛",battle:"对战",battleSub:"挑战你的朋友",groupCode:"联赛代码（可选）",groupHelp:"和朋友输入相同的代码，就能进入同一个排行榜，例如 3B-SCHOOL。",groupErr:"代码需为 3 到 20 个字符：字母、数字或连字符。",week:"本周",allTime:"总榜",you:"你",noGroup:"在个人资料中添加联赛代码，加入朋友们的排行榜。",setGroup:"添加联赛代码",demoNote:"预览：在线排行榜尚未连接，这些玩家只是示例。你自己的那一行是真实的。",example:"示例",offline:"无法连接在线排行榜。请检查网络后重试。",loading:"加载中…",retry:"重试",alone:"目前联赛里只有你一个人。把代码分享给朋友吧！",vsBot:"与 Hu 对战",vsBotSub:"老虎回答和你一样的题目",vsFriend:"好友对战",create:"创建对战",join:"开始",joinPh:"对战代码",codeErr:"请输入朋友发给你的 6 位代码。",noBattle:"没有与此代码对应的对战。",needOnline:"连接 Firebase 后即可开启好友对战。现在先和 Hu 比一比吧！",subject:"科目",shareCode:"把这个代码发给你的朋友：",copy:"复制",copied:"已复制！",waiting:"等待对手。对手完成后再回来看看。",refresh:"刷新",win:"胜利！",lose:"失败……",draw:"平局！",tieTime:"得分相同时，用时更短者获胜。",myBattles:"我的对战",pending:"等待中",done2:"已结束",again2:"新对战",time:"用时",
+lang:"中文",splashTag:"边玩边备考 Brevet",splashSub:n=>`${n} 道题，全部来自 2024–2026 年真题`,enter:"进入",contentNote:"题目和复习卡片保持法语，因为 Brevet 考试使用法语。",
 coach:"romAIn，你的教练",hello:n=>`你好，${n}！`,
 coachStart:"我是 romAIn，你的教练。从数学第一关开始吧：先读复习卡片，再开始答题！",
 coachNone:"目前没有明显的薄弱环节。继续闯关，或者挑战一整套 Brevet 真题。",
@@ -850,7 +897,8 @@ advNone:"全部答对，真厉害！继续闯关吧。",advErr:(n,t)=>`在“${t
 nextChap:"下一章",reviewBtn:n=>`查看我的 ${n} 道错题`,replay:"再玩一次",backPath:"返回闯关路线",
 remember:"要点回顾",rememberP:"仔细阅读每条解析：这些题目都在 Brevet 考试中出现过。",timeUp:"时间到，未作答",yourAns:"你的答案：",redo:"再做一次测验"},
 
-es:{lang:"Español",splashTag:"Prepara el brevet jugando",splashSub:n=>`${n} preguntas de exámenes reales de 2024 a 2026`,enter:"ENTRAR",contentNote:"Las preguntas y las fichas siguen en francés, el idioma del examen brevet.",
+es:{rank:"Clasificación",rankSub:"Tú contra tu liga",battle:"Batalla",battleSub:"Reta a tus amigos",groupCode:"Código de liga (opcional)",groupHelp:"Usa el mismo código que tus amigos para compartir clasificación, por ejemplo 3B-COLE.",groupErr:"El código debe tener de 3 a 20 caracteres: letras, números o guiones.",week:"Esta semana",allTime:"Desde el inicio",you:"Tú",noGroup:"Añade un código de liga en tu perfil para unirte a la clasificación de tus amigos.",setGroup:"Añadir código de liga",demoNote:"Vista previa: la clasificación en línea aún no está conectada, estos jugadores son ejemplos. Tu fila es real.",example:"Ejemplo",offline:"No se ha podido conectar con la clasificación en línea. Revisa tu conexión y vuelve a intentarlo.",loading:"Cargando…",retry:"Reintentar",alone:"Por ahora estás solo en esta liga. ¡Comparte tu código con tus amigos!",vsBot:"Batalla contra Hu",vsBotSub:"El tigre responde las mismas preguntas que tú",vsFriend:"Batalla entre amigos",create:"Crear una batalla",join:"Jugar",joinPh:"Código de la batalla",codeErr:"Escribe el código de 6 caracteres que te envió tu amigo.",noBattle:"Ninguna batalla coincide con este código.",needOnline:"Las batallas entre amigos se activarán en cuanto Firebase esté conectado. Mientras tanto, ¡enfréntate a Hu!",subject:"Asignatura",shareCode:"Envía este código a tu amigo:",copy:"Copiar",copied:"¡Copiado!",waiting:"Esperando a tu rival. Vuelve aquí cuando haya jugado.",refresh:"Actualizar",win:"¡Victoria!",lose:"Derrota…",draw:"¡Empate!",tieTime:"Si hay empate de aciertos, gana el más rápido.",myBattles:"Mis batallas",pending:"En espera",done2:"Terminada",again2:"Nueva batalla",time:"Tiempo",
+lang:"Español",splashTag:"Prepara el brevet jugando",splashSub:n=>`${n} preguntas de exámenes reales de 2024 a 2026`,enter:"ENTRAR",contentNote:"Las preguntas y las fichas siguen en francés, el idioma del examen brevet.",
 coach:"romAIn, tu entrenador",hello:n=>`¡Hola, ${n}!`,
 coachStart:"Soy romAIn, tu entrenador. Empieza por el primer nivel de mates: lee la ficha y ¡a jugar!",
 coachNone:"Todavía no hay ningún punto débil claro. Sigue avanzando o prueba un brevet completo.",
@@ -889,7 +937,7 @@ const GOALS=[30,60,100];
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 
 const KEY="brevetai-v3";
-const fresh=()=>({lang:"fr",cb:false,name:"",avatar:"buteur",skin:1,num:"9",photo:null,theme:"light",points:0,best:0,quizzes:0,badges:[],topics:{},done:[],levels:{},streak:0,lastDay:null,goal:60,dayDate:null,dayPts:0,sel:"math"});
+const fresh=()=>({lang:"fr",cb:false,group:"",weekId:"",weekPts:0,battles:[],name:"",avatar:"buteur",skin:1,num:"9",photo:null,theme:"light",points:0,best:0,quizzes:0,badges:[],topics:{},done:[],levels:{},streak:0,lastDay:null,goal:60,dayDate:null,dayPts:0,sel:"math"});
 let st=fresh();
 try{
   const d=JSON.parse(localStorage.getItem(KEY));
@@ -1022,6 +1070,10 @@ function profile(first){
     <div class="prow"><b>${t("skin")}</b><div class="skins">${SKINS.map((c,i)=>`<button type="button" class="skin ${i===pickSkin?"on":""}" data-i="${i}" style="background:${c}" aria-label="${t("skinN")(i+1)}" aria-pressed="${i===pickSkin}"></button>`).join("")}</div></div>
     <div class="prow"><label for="pnum"><b>${t("jersey")}</b></label><input id="pnum" inputmode="numeric" maxlength="2" value="${esc(pickNum)}" class="num"></div>
     <p class="perr" id="nerr" hidden>${t("numErr")}</p>
+    <label for="pgroup"><b>${t("groupCode")}</b></label>
+    <input id="pgroup" maxlength="20" autocomplete="off" autocapitalize="characters" placeholder="3B-COLLEGE" value="${esc(st.group)}" class="grp">
+    <p class="foot" style="text-align:left;margin-top:-6px">${t("groupHelp")}</p>
+    <p class="perr" id="gerr" hidden>${t("groupErr")}</p>
     <button class="b3 jade" type="submit">${first?t("go"):t("save")}</button>
   </form>
   <p class="foot">${t("privacy")}</p>`;
@@ -1046,13 +1098,17 @@ function profile(first){
   document.getElementById("back").onclick=first?splash:home;
   const inp=document.getElementById("pname"),err=document.getElementById("perr"),num=document.getElementById("pnum"),nerr=document.getElementById("nerr");
   inp.oninput=()=>{err.hidden=true};
+  const grp=document.getElementById("pgroup"),gerr=document.getElementById("gerr");
+  grp.oninput=()=>{gerr.hidden=true;grp.value=grp.value.toUpperCase().replace(/\s+/g,"-")};
   const validNum=v=>/^\d{1,2}$/.test(v)&&+v>=1&&+v<=99;
   num.oninput=()=>{nerr.hidden=true;num.value=num.value.replace(/\D/g,"");if(validNum(num.value)){pickNum=String(+num.value);drawGrid()}};
   app.querySelectorAll(".skin").forEach(b=>b.onclick=()=>{pickSkin=+b.dataset.i;app.querySelectorAll(".skin").forEach(x=>{const on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-pressed",on)});drawGrid()});
   document.getElementById("pf").onsubmit=e=>{e.preventDefault();const n=inp.value.trim();
     if(!n){err.hidden=false;inp.focus();return}
     if(!validNum(num.value)){nerr.hidden=false;num.focus();return}
-    st.name=n;st.photo=pickPhoto;st.avatar=pickAv==="photo"&&!pickPhoto?"buteur":pickAv;st.skin=pickSkin;st.num=String(+num.value);save();home()};
+    const g=grp.value.trim();if(g&&!/^[A-Z0-9-]{3,20}$/.test(g)){gerr.hidden=false;grp.focus();return}
+    st.group=g;
+    st.name=n;st.photo=pickPhoto;st.avatar=pickAv==="photo"&&!pickPhoto?"buteur":pickAv;st.skin=pickSkin;st.num=String(+num.value);save();syncPlayer();home()};
   if(first)inp.focus();
 }
 
@@ -1071,6 +1127,8 @@ function home(){
     <div class="pbar ${dp>=st.goal?"done":""}"><i style="width:${gp}%"></i></div>
     <div class="goal-opts">${dp>=st.goal?t("goalDone"):""}${t("change")}${GOALS.map(g=>`<button data-g="${g}" class="${g===st.goal?"on":""}">${g}</button>`).join("")}</div>
   </div>
+  <div class="duo2"><button class="b3 gold" id="rankbtn">${ic("trophy")}<span><b>${t("rank")}</b><small>${t("rankSub")}</small></span></button>
+    <button class="b3" id="battlebtn">${ic("bolt")}<span><b>${t("battle")}</b><small>${t("battleSub")}</small></span></button></div>
   <div class="tabs">${Object.keys(SUBJ).map(k=>`<button class="tab ${k} ${k===st.sel?"on":""}" data-s="${k}">${sname(k)}</button>`).join("")}</div>
   <div class="unit ${st.sel}"><b>${sname(st.sel)}</b><span>${t("unitSub")(doneN,fs.length,count(q=>q.s===st.sel))}</span>
     <div class="pbar"><i style="width:${Math.round(doneN/fs.length*100)}%"></i></div></div>
@@ -1097,6 +1155,8 @@ function home(){
   <div id="resetzone" style="display:flex;justify-content:center"><button class="reset" id="reset">${t("reset")}</button></div>
   <p class="foot">${t("foot")(QUESTIONS.length,FICHES.length)}</p>`;
   bindTop();
+  document.getElementById("rankbtn").onclick=leaderboard;
+  document.getElementById("battlebtn").onclick=()=>battleHub();
   if(c.f)document.getElementById("coachgo").onclick=()=>level(c.f.id);
   app.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{st.goal=+b.dataset.g;save();home()});
   app.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{st.sel=b.dataset.s;save();home()});
@@ -1106,7 +1166,7 @@ function home(){
   app.querySelectorAll(".chal [data-y]").forEach(b=>b.onclick=()=>startQuiz("year",+b.dataset.y));
   app.querySelectorAll(".badge").forEach(b=>b.onclick=()=>{hintBadge=b.dataset.b;home()});
   document.getElementById("reset").onclick=()=>{document.getElementById("resetzone").innerHTML=`<div class="btns" style="width:100%"><button class="b3 ghost" id="no">${t("cancel")}</button><button class="b3" id="yes">${t("eraseAll")}</button></div>`;
-    document.getElementById("no").onclick=home;document.getElementById("yes").onclick=()=>{const k={lang:st.lang,cb:st.cb,theme:st.theme,name:st.name,avatar:st.avatar,skin:st.skin,num:st.num,photo:st.photo};st=Object.assign(fresh(),k);save();hintBadge=null;home()}};
+    document.getElementById("no").onclick=home;document.getElementById("yes").onclick=()=>{const k={lang:st.lang,cb:st.cb,group:st.group,battles:st.battles,theme:st.theme,name:st.name,avatar:st.avatar,skin:st.skin,num:st.num,photo:st.photo};st=Object.assign(fresh(),k);save();hintBadge=null;home()}};
 }
 
 function level(id){
@@ -1126,7 +1186,7 @@ function level(id){
 let Z=null,iv=null;
 function stopTimer(){clearInterval(iv);iv=null}
 function startQuiz(kind,key){
-  const pool=kind==="level"?QUESTIONS.filter(q=>q.t===key):kind==="defi"?QUESTIONS.filter(q=>q.s===key):kind==="year"?QUESTIONS.filter(q=>q.y===key):QUESTIONS;
+  const pool=kind==="battle"?key.ids.map(i=>QUESTIONS[i]).filter(Boolean):kind==="bot"?QUESTIONS.filter(q=>key==="mix"||q.s===key):kind==="level"?QUESTIONS.filter(q=>q.t===key):kind==="defi"?QUESTIONS.filter(q=>q.s===key):kind==="year"?QUESTIONS.filter(q=>q.y===key):QUESTIONS;
   const color=kind==="level"?fiche(key).s:kind==="defi"?key:kind==="year"?(key===2025?"gold":key===2026?"sci":"math"):"red";
   Z={kind,key,color,list:shuffle(pool).slice(0,10).map(q=>({...q,opts:shuffle(q.a)})),i:0,ans:[],pts:0};
   showQ();
@@ -1134,7 +1194,7 @@ function startQuiz(kind,key){
 const colorClass=()=>Z.color==="gold"||Z.color==="red"?"":Z.color;
 function showQ(){
   const q=Z.list[Z.i],N=Z.list.length,L=LEVELS[q.d];Z.T=L.t;Z.fast=L.fast;
-  const showSubj=Z.kind==="random"||Z.kind==="year";
+  const showSubj=Z.kind==="random"||Z.kind==="year"||Z.kind==="bot"||Z.kind==="battle";
   app.innerHTML=`
   <div class="qtop ${colorClass()}" style="${Z.color==="gold"?"--c:var(--gold)":Z.color==="red"?"--c:var(--red)":""}">
     <button class="x" id="quit" aria-label="${t("quit")}">${ic("x")}</button>
@@ -1163,7 +1223,7 @@ function answer(k){
   stopTimer();
   const q=Z.list[Z.i],time=(performance.now()-Z.t0)/1000;
   const ok=k!==null&&q.opts[k]===q.a[0],fast=ok&&time<Z.fast,gain=ok?10+(fast?5:0):0;
-  Z.pts+=gain;Z.ans.push({q,chosen:k===null?null:q.opts[k],ok,fast});
+  Z.pts+=gain;Z.ans.push({q,chosen:k===null?null:q.opts[k],ok,fast,time:Math.min(time,Z.T)});
   app.querySelectorAll(".opt").forEach(b=>{b.disabled=true;const kk=+b.dataset.k,o=q.opts[kk];
     if(o===q.a[0]){b.classList.add("ok");b.querySelector(".l").innerHTML=ic("check")}
     else if(kk===k){b.classList.add("ko");b.querySelector(".l").innerHTML=ic("x")}});
@@ -1185,6 +1245,8 @@ function finish(){
   st.points+=Z.pts;st.quizzes++;st.best=Math.max(st.best,Math.round(good/N*10));
   if(st.dayDate!==td){st.dayDate=td;st.dayPts=0}
   st.dayPts+=Z.pts;
+  const wk=weekId();if(st.weekId!==wk){st.weekId=wk;st.weekPts=0}
+  st.weekPts+=Z.pts;
   let streakUp=false;
   if(st.lastDay!==td){st.streak=st.lastDay===yday()?st.streak+1:1;st.lastDay=td;streakUp=true}
   Z.ans.forEach(a=>{const r=st.topics[a.q.t]||(st.topics[a.q.t]={ok:0,n:0});r.n++;if(a.ok)r.ok++});
@@ -1205,6 +1267,8 @@ function finish(){
   if(Object.keys(SUBJ).every(s=>st.done.includes(s)))give("tour");
   if(curStreak()>=3)give("assidu");
   save();
+  syncPlayer();
+  if(Z.kind==="battle"||Z.kind==="bot")return battleDone(good,N);
   const errs=Z.ans.filter(a=>!a.ok),win=good/N>=.7,goalNow=st.dayPts>=st.goal;
   let advice;
   if(!errs.length)advice=t("advNone");
@@ -1250,6 +1314,173 @@ function review(errs){
   document.getElementById("back").onclick=home;
   document.getElementById("again").onclick=()=>startQuiz(Z.kind,Z.key);
   document.getElementById("home").onclick=home;
+}
+
+/* ---------- Firebase : classement en ligne et battles entre potes ----------
+   Colle ici la configuration de ton projet Firebase (voir le guide). Laisse null pour le mode aperçu. */
+const FIREBASE_CONFIG={
+  apiKey:"AIzaSyCyqJ8JObJ4dgZ551Pp_bx3nP7B5xnlMzQ",
+  authDomain:"brevet-ai.firebaseapp.com",
+  projectId:"brevet-ai",
+  storageBucket:"brevet-ai.firebasestorage.app",
+  messagingSenderId:"1035868896082",
+  appId:"1:1035868896082:web:46e1bd2fa4b18bd2b0588b"
+};
+const FB_V="10.12.2";
+let fbPromise=null;
+const loadScript=u=>new Promise((res,rej)=>{const s=document.createElement("script");s.src=u;s.onload=res;s.onerror=rej;document.head.appendChild(s)});
+const online=()=>!!FIREBASE_CONFIG;
+function fb(){
+  if(!online())return Promise.reject(new Error("offline"));
+  if(fbPromise)return fbPromise;
+  fbPromise=(async()=>{
+    if(!window.firebase){const base=`https://www.gstatic.com/firebasejs/${FB_V}/`;
+      await loadScript(base+"firebase-app-compat.js");await loadScript(base+"firebase-auth-compat.js");await loadScript(base+"firebase-firestore-compat.js")}
+    if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
+    const cred=await firebase.auth().signInAnonymously();
+    return{db:firebase.firestore(),uid:cred.user.uid,now:()=>firebase.firestore.FieldValue.serverTimestamp()};
+  })();
+  fbPromise.catch(()=>{fbPromise=null});
+  return fbPromise;
+}
+function weekId(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+3-(d.getDay()+6)%7);const w1=new Date(d.getFullYear(),0,4);return d.getFullYear()+"-W"+(1+Math.round(((d-w1)/864e5-3+(w1.getDay()+6)%7)/7))}
+const totalStars=()=>Object.values(st.levels).reduce((a,l)=>a+(l.stars||0),0);
+const pubAvatar=()=>AVATARS[st.avatar]?st.avatar:"buteur";
+const myWeekPts=()=>st.weekId===weekId()?st.weekPts:0;
+async function syncPlayer(){
+  if(!online()||!st.group)return;
+  try{const F=await fb();await F.db.collection("players").doc(F.uid).set({name:st.name.slice(0,20),avatar:pubAvatar(),skin:st.skin,num:st.num,group:st.group,points:st.points,week:weekId(),weekPts:myWeekPts(),stars:totalStars(),streak:curStreak(),updatedAt:F.now()})}catch(e){}
+}
+const cleanP=p=>({name:esc(String(p.name||"?").slice(0,20)),avatar:AVATARS[p.avatar]?p.avatar:"buteur",skin:[0,1,2,3].includes(p.skin)?p.skin:1,num:/^\d{1,2}$/.test(p.num)?p.num:"9",points:Math.max(0,+p.points||0),weekPts:p.week===weekId()?Math.max(0,+p.weekPts||0):0});
+const avOf=(r,s)=>r.me?avatar(st.avatar,s):avatar(r.avatar,s,{skin:SKINS[r.skin],num:r.num});
+
+/* Joueurs d'exemple affichés seulement en mode aperçu, clairement étiquetés */
+const DEMO=[{name:"Léa",avatar:"volt",skin:0,num:"7",points:640,weekPts:180},{name:"Yanis",avatar:"buteur",skin:2,num:"10",points:910,weekPts:120},{name:"Inès",avatar:"gamer",skin:1,num:"9",points:520,weekPts:210},{name:"Hugo",avatar:"gardien",skin:0,num:"1",points:380,weekPts:60},{name:"Mia",avatar:"ombre",skin:3,num:"4",points:300,weekPts:95},{name:"Sacha",avatar:"titan",skin:1,num:"23",points:150,weekPts:40}];
+
+/* ---------- Classement ---------- */
+let rankTab="week";
+async function leaderboard(){
+  stopTimer();
+  const me={name:esc(st.name),avatar:pubAvatar(),skin:st.skin,num:st.num,points:st.points,weekPts:myWeekPts(),me:true};
+  const shell=body=>`<div class="bar"><button class="round" id="back" aria-label="${t("back")}">${ic("back")}</button><h1 style="font-size:24px">${t("rank")}</h1><span class="spacer"></span>${st.group?`<span class="chip">${ic("flag")}${esc(st.group)}</span>`:""}</div>
+    <div class="seg"><button class="${rankTab==="week"?"on":""}" data-r="week">${t("week")}</button><button class="${rankTab==="all"?"on":""}" data-r="all">${t("allTime")}</button></div>${body}`;
+  const bind=()=>{document.getElementById("back").onclick=home;app.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{rankTab=b.dataset.r;leaderboard()});
+    const sg=document.getElementById("setgroup");if(sg)sg.onclick=()=>profile(false);const rt=document.getElementById("retry");if(rt)rt.onclick=leaderboard};
+  let rows,demo=false;
+  if(!online()){demo=true;rows=DEMO.map(d=>({...d})).concat([me])}
+  else if(!st.group){app.innerHTML=shell(`<div class="hero">${coachPic(80)}<div class="bubble"><span class="who">${t("coach")}</span><p>${t("noGroup")}</p><button class="link" id="setgroup">${t("setGroup")}</button></div></div>`);bind();return}
+  else{
+    app.innerHTML=shell(`<p class="hint">${t("loading")}</p>`);bind();
+    try{const F=await fb();await syncPlayer();const snap=await F.db.collection("players").where("group","==",st.group).limit(300).get();
+      rows=snap.docs.map(d=>({...cleanP(d.data()),me:d.id===F.uid}));if(!rows.some(r=>r.me))rows.push(me)}
+    catch(e){app.innerHTML=shell(`<div class="card"><p>${t("offline")}</p></div><button class="b3 ghost" id="retry">${t("retry")}</button>`);bind();return}
+  }
+  const key=rankTab==="week"?"weekPts":"points";
+  rows.sort((a,b)=>b[key]-a[key]||(a.me?-1:1));
+  const top=rows.slice(0,3),rest=rows.slice(3);
+  const nm=r=>r.me?t("you"):r.name;
+  const pod=[1,0,2].filter(i=>top[i]).map(i=>{const r=top[i];return `<div class="pod p${i+1} ${r.me?"me":""}">${avOf(r,i===0?76:60)}<b>${nm(r)}</b><span>${r[key]} ${t("pts")}</span><div class="step">${i+1}</div></div>`}).join("");
+  app.innerHTML=shell(`
+    ${demo?`<p class="note">${ic("info")}<span>${t("demoNote")}</span></p>`:""}
+    <div class="podium">${pod}</div>
+    ${rest.length?`<ol class="rlist">${rest.map((r,i)=>`<li class="${r.me?"me":""}"><span class="pos">${i+4}</span>${avOf(r,40)}<b>${nm(r)}</b>${demo&&!r.me?`<span class="extag">${t("example")}</span>`:""}<span class="pv">${r[key]}</span></li>`).join("")}</ol>`:""}
+    ${!demo&&rows.length===1?`<div class="hero">${coachPic(70)}<div class="bubble"><span class="who">${t("coach")}</span><p>${t("alone")}</p></div></div>`:""}`);
+  bind();
+}
+
+/* ---------- Battles ---------- */
+let bSubj="mix";
+const ALPH="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function addMyBattle(code,subj){st.battles=[{code,subj,done:false},...st.battles.filter(b=>b.code!==code)].slice(0,10);save()}
+function battleHub(msg){
+  stopTimer();
+  const subs=["mix",...Object.keys(SUBJ)];
+  app.innerHTML=`<div class="bar"><button class="round" id="back" aria-label="${t("back")}">${ic("back")}</button><h1 style="font-size:24px">${t("battle")}</h1><span class="spacer"></span></div>
+  <div class="vsbanner">${avatar(st.avatar,76)}<span class="vsmid">VS</span>${tiger(84,"happy")}</div>
+  <div class="card set"><b>${t("subject")}</b><div class="langs left">${subs.map(s=>`<button class="lang ${s===bSubj?"on":""}" data-bs="${s}" aria-pressed="${s===bSubj}">${s==="mix"?t("mixed"):sname(s)}</button>`).join("")}</div></div>
+  <button class="b3 hg big2" id="bot">${ic("bolt")}<span><b>${t("vsBot")}</b><small>${t("vsBotSub")}</small></span></button>
+  <div class="card set"><b>${t("vsFriend")}</b>
+    ${online()?`<button class="b3" id="create">${t("create")}</button>
+    <form class="joinrow" id="jf" novalidate><input id="jcode" maxlength="6" placeholder="${t("joinPh")}" autocapitalize="characters" autocomplete="off" aria-label="${t("joinPh")}"><button class="b3 blue" type="submit">${t("join")}</button></form>
+    <p class="perr" id="jerr" ${msg?"":"hidden"}>${msg||""}</p>`:`<p class="muted">${t("needOnline")}</p>`}
+  </div>
+  ${st.battles.length?`<h2>${t("myBattles")}</h2><div class="blist">${st.battles.map(b=>`<button class="bitem" data-code="${b.code}"><span class="code">${b.code}</span><span>${b.subj==="mix"?t("mixed"):sname(b.subj)}</span><span class="muted">${b.done?t("done2"):t("pending")}</span></button>`).join("")}</div>`:""}`;
+  document.getElementById("back").onclick=home;
+  app.querySelectorAll("[data-bs]").forEach(b=>b.onclick=()=>{bSubj=b.dataset.bs;battleHub()});
+  document.getElementById("bot").onclick=()=>startQuiz("bot",bSubj);
+  app.querySelectorAll(".bitem").forEach(b=>b.onclick=()=>battleView(b.dataset.code));
+  if(online()){
+    document.getElementById("create").onclick=async e=>{e.target.disabled=true;try{await createBattle()}catch(_){battleHub(t("offline"))}};
+    const inp=document.getElementById("jcode"),jerr=document.getElementById("jerr");
+    inp.oninput=()=>{jerr.hidden=true;inp.value=inp.value.toUpperCase().replace(/[^A-Z0-9]/g,"")};
+    document.getElementById("jf").onsubmit=e=>{e.preventDefault();const c=inp.value.trim();
+      if(!/^[A-Z0-9]{6}$/.test(c)){jerr.textContent=t("codeErr");jerr.hidden=false;inp.focus();return}
+      joinBattle(c)};
+  }
+}
+async function createBattle(){
+  const F=await fb();
+  const pool=QUESTIONS.map((q,i)=>i).filter(i=>bSubj==="mix"||QUESTIONS[i].s===bSubj);
+  const ids=shuffle(pool).slice(0,10);let code;
+  for(let k=0;k<6;k++){code=Array.from({length:6},()=>ALPH[Math.floor(Math.random()*ALPH.length)]).join("");if(!(await F.db.collection("battles").doc(code).get()).exists)break}
+  await F.db.collection("battles").doc(code).set({ids,subj:bSubj,creator:F.uid,createdAt:F.now(),players:{}});
+  addMyBattle(code,bSubj);startQuiz("battle",{code,ids});
+}
+async function joinBattle(code){
+  try{const F=await fb();const doc=await F.db.collection("battles").doc(code).get();
+    if(!doc.exists)return battleHub(t("noBattle"));
+    const d=doc.data(),ids=(d.ids||[]).filter(i=>Number.isInteger(i)&&i>=0&&i<QUESTIONS.length);
+    if(ids.length<5)return battleHub(t("noBattle"));
+    addMyBattle(code,SUBJ[d.subj]?d.subj:"mix");
+    if((d.players||{})[F.uid])return battleView(code);
+    startQuiz("battle",{code,ids});
+  }catch(e){battleHub(t("offline"))}
+}
+async function battleDone(good,N){
+  const myTime=Math.round(Z.ans.reduce((a,x)=>a+x.time,0));
+  const mine={name:st.name.slice(0,20),avatar:pubAvatar(),skin:st.skin,num:st.num,score:good,n:N,time:myTime};
+  if(Z.kind==="bot"){
+    let bs=0,bt=0;Z.list.forEach(q=>{if(Math.random()<({1:.75,2:.6,3:.45})[q.d])bs++;bt+=3+Math.random()*LEVELS[q.d].t*.6});
+    return battleView(null,{me:mine,opp:{name:"Hu",bot:true,score:bs,time:Math.round(bt)},N});
+  }
+  app.innerHTML=`<p class="hint">${t("loading")}</p>`;
+  try{const F=await fb();await F.db.collection("battles").doc(Z.key.code).update({["players."+F.uid]:mine})}catch(e){}
+  battleView(Z.key.code);
+}
+async function battleView(code,local){
+  stopTimer();
+  let me=null,opp=null,N=10;
+  if(local)({me,opp,N}=local);
+  else{
+    app.innerHTML=`<p class="hint">${t("loading")}</p>`;
+    try{const F=await fb();const d=(await F.db.collection("battles").doc(code).get()).data()||{};const ps=d.players||{};
+      me=ps[F.uid]||null;const oid=Object.keys(ps).find(k=>k!==F.uid);opp=oid?ps[oid]:null;N=(d.ids||[]).length||10;
+      const mb=st.battles.find(b=>b.code===code);if(mb&&opp&&me&&!mb.done){mb.done=true;save()}}
+    catch(e){app.innerHTML=`<div class="card"><p>${t("offline")}</p></div><button class="b3 ghost" id="back">${t("back")}</button>`;document.getElementById("back").onclick=()=>battleHub();return}
+  }
+  const num=v=>Math.max(0,Math.round(+v||0));
+  const side=(p,isMe)=>p?`<div class="side ${isMe?"me":""}">${isMe?avatar(st.avatar,84):p.bot?tiger(84,"happy"):avatar(AVATARS[p.avatar]?p.avatar:"buteur",84,{skin:SKINS[p.skin]||SKINS[1],num:/^\d{1,2}$/.test(p.num)?p.num:"9"})}
+      <b>${isMe?t("you"):esc(String(p.name||"?").slice(0,20))}</b><span class="sc">${num(p.score)}/${N}</span><span class="muted">${t("time")} : ${num(p.time)} s</span></div>`
+    :`<div class="side wait"><div class="qmark">?</div><b>…</b></div>`;
+  let verdict="",mood="happy";
+  if(me&&opp){const a=num(me.score),b=num(opp.score),ta=num(me.time),tb=num(opp.time);
+    const r=a!==b?(a>b?1:-1):(ta!==tb?(ta<tb?1:-1):0);verdict=r>0?t("win"):r<0?t("lose"):t("draw");mood=r<0?"sad":"happy"}
+  app.innerHTML=`<div class="bar"><button class="round" id="back" aria-label="${t("back")}">${ic("back")}</button><span class="spacer"></span>${code?`<span class="chip">${ic("bolt")}${code}</span>`:""}</div>
+  ${verdict?`<div class="res">${tiger(110,mood)}<h1>${verdict}</h1><p class="muted">${t("tieTime")}</p></div>`:""}
+  <div class="vs">${side(me,true)}<span class="vsmid">VS</span>${side(opp,false)}</div>
+  ${code&&!me?`<button class="b3" id="play">${t("join")}</button>`:""}
+  ${code&&me&&!opp?`<div class="card set"><b>${t("shareCode")}</b><div class="codebox"><span id="codetxt">${code}</span><button class="b3 blue" id="copy">${t("copy")}</button></div>
+    <p class="muted">${t("waiting")}</p><button class="b3 ghost" id="refresh">${t("refresh")}</button></div>`:""}
+  <div class="btns"><button class="b3 ${code&&me&&!opp?"ghost":""}" id="again">${t("again2")}</button><button class="b3 ghost" id="home">${t("backPath")}</button></div>`;
+  document.getElementById("back").onclick=()=>battleHub();
+  document.getElementById("again").onclick=()=>battleHub();
+  document.getElementById("home").onclick=home;
+  const pl=document.getElementById("play");if(pl)pl.onclick=()=>joinBattle(code);
+  const rf=document.getElementById("refresh");if(rf)rf.onclick=()=>battleView(code);
+  const cp=document.getElementById("copy");
+  if(cp)cp.onclick=()=>{const done=()=>{cp.textContent=t("copied")};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById("codetxt"));const s=getSelection();s.removeAllRanges();s.addRange(r)};
+    try{navigator.clipboard.writeText(code).then(done,sel)}catch(_){sel()}};
 }
 
 splash();
